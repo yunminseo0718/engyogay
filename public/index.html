@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>채팅</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="chat-container">
+    <div id="chat" class="chat-box"></div>
+    <div class="input-area">
+      <input id="message-input" type="text" placeholder="메시지를 입력하세요" autocomplete="off" />
+      <button onclick="sendMessage()">전송</button>
+      <input type="file" id="image-input" accept="image/*" />
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
