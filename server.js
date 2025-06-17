@@ -1,6 +1,11 @@
 const express = require('express');
 const app = express();
-
+const express = require('express');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+const fs = require('fs');
+const path = require('path');
 const http = require('http').createServer(app);
 const { Server } = require('socket.io');
 const io = new Server(http);
@@ -20,6 +25,100 @@ if (!fs.existsSync('./uploads')) {
 app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+
+app.use(session({
+  secret: 'mysecretkey',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 1000 * 60 * 30 }
+}));
+
+app.get('/register', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'index.html'));
+});
+
+// 회원가입 처리
+app.post('/register', async (req, res) => {
+  const { username, password } = req.body;
+
+  // 기존 사용자 불러오기
+  const users = JSON.parse(fs.readFileSync('./users.json', 'utf-8'));
+
+  // 중복 아이디 체크
+  if (users.find(u => u.username === username)) {
+    return res.send('이미 존재하는 아이디야');
+  }
+
+  // 비밀번호 해시
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  // 새 사용자 추가
+  const newUser = {
+    id: Date.now(), // 간단하게 시간 기반 ID
+    username,
+    passwordHash
+  };
+
+  users.push(newUser);
+  fs.writeFileSync('./users.json', JSON.stringify(users, null, 2));
+
+  // 로그인 페이지로 이동
+  res.redirect('/login');
+});
+
+
+// 사용자 정보 파일에서 불러오기
+const getUsers = () => {
+  const data = fs.readFileSync('./users.json', 'utf-8');
+  return JSON.parse(data);
+};
+
+// 로그인 페이지
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'login.html'));
+});
+
+// 로그인 처리
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  const users = getUsers();
+  const user = users.find(u => u.username === username);
+
+  if (!user) return res.send('존재하지 않는 사용자야');
+
+  const match = await bcrypt.compare(password, user.passwordHash);
+  if (match) {
+    req.session.user = { id: user.id, username: user.username };
+    res.send(`환영해, ${user.username}`);
+  } else {
+    res.send('비밀번호가 틀렸어');
+  }
+});
+
+// 로그아웃
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.send('로그아웃했어');
+});
+
+// index.html 제공
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'index.html'));
+});
+
+// 로그인한 사용자 정보 반환 (API)
+app.get('/api/user', (req, res) => {
+  if (req.session.user) {
+    res.json({ loggedIn: true, username: req.session.user.username });
+  } else {
+    res.json({ loggedIn: false });
+  }
+});
+
+//--------------------------------------------------------수정필요함
 
 // IP 정규화 함수
 function getNormalizedIp(reqOrSocket) {
