@@ -2,11 +2,10 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
   background-color: #0f0f0f;
   color: #ffffff;
-  margin: 0;
   display: flex;
-  justify-content: center;
   align-items: center;
   height: 100vh;
+  flex-direction: column
 }
 
 a {
@@ -16,8 +15,12 @@ a:hover {
   color: #FED154;
 }
 
+.space {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 button {
-  margin-left: 10px;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
@@ -30,6 +33,26 @@ button:hover {
   background-color: #FED154;
 }
 
+.login-box {
+  background-color: #292929;
+  width: 100%;
+  max-width: 600px;
+  height: 4vh;
+  margin-top: 3vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 10px;
+}
+
+.rounded-input {
+  margin-left: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  width: 120px;
+}
 
 .chat-container {
   width: 100%;
@@ -37,6 +60,8 @@ button:hover {
   height: 80vh;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  margin-top: 1vh;
   background-color: #292929;
   border-radius: 10px;
   overflow: hidden;
@@ -76,7 +101,6 @@ button:hover {
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.2s ease;
-  margin-left: 10px;
 
 }
 

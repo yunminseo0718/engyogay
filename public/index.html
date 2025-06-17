@@ -7,13 +7,22 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="login-box">
+    <form action="/login" method="post">
+      <input class="rounded-input space" type="text" name="username" placeholder="ID" required />
+      <input class="rounded-input space" type="password" name="password" placeholder="PW" required />
+      <button class="space" type="submit">LOGIN</button>
+      <button class="space" onclick="location.href='/register'">REGISTER</button>
+    </form>
+
+  </div>
   <div class="chat-container">
     <div id="chat" class="chat-box"></div>
     <div class="input-area">
-      <input id="message-input" type="text" placeholder="메시지를 입력하세요" autocomplete="off" />
-      <button onclick="sendMessage()">SEND</button>
-      <label for="image-input" class="custom-upload-button">IMG</label>
-      <input type="file" id="image-input" style="display: none;">
+      <input class="space" id="message-input" type="text" placeholder="메시지를 입력하세요" autocomplete="off" />
+      <button class="space" onclick="sendMessage()">SEND</button>
+      <label for="image-input" class="custom-upload-button space">IMG</label>
+      <input class="space" type="image" id="image-input" style="display: none;">
 
     </div>
   </div>
