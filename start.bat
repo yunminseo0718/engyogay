@@ -1,2 +1,2 @@
-cd C:\Users\yunmi\Desktop\nevsi
+cd C:\Users\yunmi\Desktop\engyogay
 node server.js
