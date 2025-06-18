@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const session = require('express-session');
+const multer = require('multer');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
@@ -8,10 +9,6 @@ const path = require('path');
 const http = require('http').createServer(app);
 const { Server } = require('socket.io');
 const io = new Server(http);
-
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
 
 const PORT = process.env.PORT || 4000 
 
